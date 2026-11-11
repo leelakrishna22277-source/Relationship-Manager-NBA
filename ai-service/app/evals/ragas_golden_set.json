@@ -1,0 +1,81 @@
+{
+  "project": "BNK-10",
+  "framework": "RAGAS (Retrieval-Augmented Generation Assessment)",
+  "version": "1.0.0",
+  "description": "Golden evaluation dataset for evaluating ChromaDB policy retrieval and generation with RAGAS metrics: Faithfulness, Answer Relevance, Context Precision, and Context Recall.",
+  "gate": 0.85,
+  "cases": [
+    {
+      "id": "rag-case-001-deposit-maturity-rollover",
+      "query": "CONSERVATIVE Risk Tier 1 Capital preservation liquid savings zero principal drawdown Guaranteed Term Deposits LOW risk",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "expected_keywords": ["CONSERVATIVE", "LOW", "Term Deposits", "preservation"],
+      "ground_truth": "For conservative clients facing deposit maturity, products with LOW risk rating such as Government Fixed Deposits and Guaranteed Term Deposits are permitted. The objective is capital preservation and liquid savings with zero or negligible principal drawdown tolerance.",
+      "answer": "Under institutional policy POL-SUIT-2026-V1 Section 2.1, Conservative clients prioritize capital preservation and liquid savings with zero or negligible tolerance for principal drawdown. The maximum permissible product risk is LOW, with permitted asset classes including cash deposits, Treasury Bills, Government Fixed Deposits, and Guaranteed Term Deposits."
+    },
+    {
+      "id": "rag-case-002-conservative-equity-restriction",
+      "query": "Product Suitability Matrix rules: can conservative client be recommended medium or high risk products?",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "expected_keywords": ["REJECT", "Suitability Matrix", "downgrade", "suppressed"],
+      "ground_truth": "Under Section 3 Product Suitability Matrix, conservative clients are strictly restricted (REJECT) from MEDIUM and HIGH risk products. AI recommendation engines and Relationship Managers cannot downgrade a product's risk or override a REJECT decision; breaching recommendations are automatically suppressed.",
+      "answer": "Under POL-SUIT-2026-V1 Section 3 Product Suitability Matrix, recommending a MEDIUM or HIGH risk product to a CONSERVATIVE client is strictly marked REJECT. An AI model or Relationship Manager cannot downgrade a product's risk or override a REJECT decision. Any recommendation breaching this matrix is automatically suppressed."
+    },
+    {
+      "id": "rag-case-003-concentration-and-liquidity-caps",
+      "query": "Single asset concentration caps and mandatory liquidity buffer requirements under institutional portfolio policy",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "expected_keywords": ["35%", "Total Assets Under Management", "20%", "1,00,000"],
+      "ground_truth": "Under Section 4 Concentration and Exposure Caps: No single non-guaranteed investment product allocation may exceed 35% of Total Assets Under Management (AUM), and recommendations must never deplete cash or liquid savings below 20% of Total AUM or a minimum buffer of ₹1,00,000.",
+      "answer": "Under POL-SUIT-2026-V1 Section 4 Concentration and Exposure Caps, no single non-guaranteed investment product allocation may exceed 35% of Total Assets Under Management (AUM). In addition, recommendations must never deplete client cash or liquid savings below 20% of Total AUM or a minimum buffer of ₹1,00,000, whichever is greater."
+    },
+    {
+      "id": "rag-case-004-duplicate-position-guard",
+      "query": "Duplicate Position Guard product the client already holds is blocked unless existing position matures within 30 calendar days",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "expected_keywords": ["already holds", "blocked", "30 calendar days", "matures"],
+      "ground_truth": "Under Section 4 Concentration and Exposure Caps, a recommendation for a product the client already holds is blocked by policy unless the existing position matures within 30 calendar days.",
+      "answer": "Under POL-SUIT-2026-V1 Section 4 Concentration and Exposure Caps, duplicate position guard ensures that a recommendation for a product the client already holds is blocked unless the existing position matures within 30 calendar days."
+    },
+    {
+      "id": "rag-case-005-fixed-deposit-product-specs",
+      "query": "18-Month High-Yield Fixed Deposit prod-fd-18m specifications indicative return eligibility capital protection",
+      "doc_type": "PRODUCT_GUIDELINES",
+      "expected_document_id": "GDL-PROD-2026-V1",
+      "expected_keywords": ["prod-fd-18m", "7.40%", "1,00,000", "LOW"],
+      "ground_truth": "The 18-Month High-Yield Fixed Deposit (prod-fd-18m) has LOW risk rating, minimum investment of ₹1,00,000, indicative return of 7.40% p.a., 100% principal protection, and is eligible for RETAIL, PREMIER, and HNI segments across CONSERVATIVE, MODERATE, and AGGRESSIVE profiles.",
+      "answer": "Under GDL-PROD-2026-V1 Section 2.1, the 18-Month High-Yield Fixed Deposit (prod-fd-18m) has a LOW risk rating, minimum investment of ₹1,00,000.00, indicative return of 7.40% p.a. (740 bps), 18-month tenor, 100% principal protection, and is eligible for RETAIL, PREMIER, and HNI segments across CONSERVATIVE, MODERATE, and AGGRESSIVE risk profiles."
+    },
+    {
+      "id": "rag-case-006-balanced-advantage-specs",
+      "query": "Specifications, indicative return, risk rating, and conservative prohibition for Dynamic Balanced Advantage Fund prod-balanced-adv",
+      "doc_type": "PRODUCT_GUIDELINES",
+      "expected_document_id": "GDL-PROD-2026-V1",
+      "expected_keywords": ["prod-balanced-adv", "MEDIUM", "5,00,000", "PROHIBITED"],
+      "ground_truth": "The Dynamic Balanced Advantage Fund (prod-balanced-adv) is rated MEDIUM risk with minimum investment of ₹5,00,000 and indicative return of 10.50% p.a. It dynamically rebalances 30%-70% equity/debt, is eligible for MODERATE and AGGRESSIVE clients, and is strictly PROHIBITED for CONSERVATIVE clients.",
+      "answer": "Under GDL-PROD-2026-V1 Section 2.3, the Dynamic Balanced Advantage Fund (prod-balanced-adv) is rated MEDIUM risk with minimum investment of ₹5,00,000.00, indicative return of 10.50% p.a., and dynamic 30%-70% equity and debt allocation. It is eligible for MODERATE and AGGRESSIVE profiles, and is strictly PROHIBITED for CONSERVATIVE clients."
+    },
+    {
+      "id": "rag-case-007-prohibited-promises-and-guarantees",
+      "query": "Strictly prohibited statements guaranteed returns zero risk promises statutory limits",
+      "doc_type": "CUSTOMER_COMMUNICATION_POLICY",
+      "expected_document_id": "POL-COMM-2026-V1",
+      "expected_keywords": ["strictly prohibited", "Guaranteed Returns", "zero risk", "statutory"],
+      "ground_truth": "Under Section 2 Strictly Prohibited Statements, promising guaranteed returns (such as 'certain to make money with zero risk' or 'guarantees an 8.5% return') is strictly prohibited in written or verbal outreach. Capital guarantees may only be stated for government-backed deposits within statutory limits.",
+      "answer": "Under POL-COMM-2026-V1 Section 2 Strictly Prohibited Statements, promising guaranteed returns is prohibited. Statements such as 'This fund guarantees an 8.5% return' or 'You are certain to make money with zero risk' or 'Risk-free growth opportunity' are strictly prohibited in any written or verbal outreach. Capital guarantees on government-backed Fixed Deposits may be stated solely within statutory insurance limits."
+    },
+    {
+      "id": "rag-case-008-prohibited-urgency-tactics",
+      "query": "Artificial Urgency Pressure Prohibited Act before 5 PM today or you will miss out limited spots remaining",
+      "doc_type": "CUSTOMER_COMMUNICATION_POLICY",
+      "expected_document_id": "POL-COMM-2026-V1",
+      "expected_keywords": ["Artificial Urgency", "pressure", "prohibited", "spots remaining"],
+      "ground_truth": "Under Section 2 Strictly Prohibited Statements, artificial urgency and pressure prohibited expressions include 'Act before 5 PM today or you will miss out', 'Once-in-a-lifetime deal', and 'Limited spots remaining' in any written or verbal outreach.",
+      "answer": "Under POL-COMM-2026-V1 Section 2 Strictly Prohibited Statements, artificial urgency and pressure prohibited phrasing includes 'Act before 5 PM today or you will miss out', 'Once-in-a-lifetime deal', and 'Limited spots remaining' in outreach."
+    }
+  ]
+}

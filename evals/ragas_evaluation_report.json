@@ -1,0 +1,148 @@
+{
+  "project": "BNK-10",
+  "evaluation_framework": "RAGAS (Retrieval-Augmented Generation Assessment)",
+  "timestamp": "2026-11-05T07:05:24.271103+00:00",
+  "total_cases": 8,
+  "passed_cases": 8,
+  "gate": 0.85,
+  "gate_passed": true,
+  "overall_score": 0.9611,
+  "metrics_summary": {
+    "faithfulness": 1.0,
+    "answer_relevance": 0.9079,
+    "context_precision": 1.0,
+    "context_recall": 0.9366
+  },
+  "dataset_rows": 8,
+  "duration_ms": 3444.89,
+  "cases": [
+    {
+      "case_id": "rag-case-001-deposit-maturity-rollover",
+      "query": "CONSERVATIVE Risk Tier 1 Capital preservation liquid savings zero principal drawdown Guaranteed Term Deposits LOW risk",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "retrieved_chunk_count": 3,
+      "top_retrieved_source": "POL-SUIT-2026-V1#2_1_CONSERVATIVE__Risk_Tier_1_",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.9679,
+        "context_precision": 1.0,
+        "context_recall": 0.9107
+      },
+      "average_score": 0.9697,
+      "passed": true
+    },
+    {
+      "case_id": "rag-case-002-conservative-equity-restriction",
+      "query": "Product Suitability Matrix rules: can conservative client be recommended medium or high risk products?",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "retrieved_chunk_count": 3,
+      "top_retrieved_source": "POL-SUIT-2026-V1#3__Product_Suitability_Matrix__Deterministic_Enforcement_",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.8615,
+        "context_precision": 1.0,
+        "context_recall": 0.8889
+      },
+      "average_score": 0.9376,
+      "passed": true
+    },
+    {
+      "case_id": "rag-case-003-concentration-and-liquidity-caps",
+      "query": "Single asset concentration caps and mandatory liquidity buffer requirements under institutional portfolio policy",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "retrieved_chunk_count": 3,
+      "top_retrieved_source": "POL-SUIT-2026-V1#4__Concentration_and_Exposure_Caps",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.7136,
+        "context_precision": 1.0,
+        "context_recall": 0.9833
+      },
+      "average_score": 0.9242,
+      "passed": true
+    },
+    {
+      "case_id": "rag-case-004-duplicate-position-guard",
+      "query": "Duplicate Position Guard product the client already holds is blocked unless existing position matures within 30 calendar days",
+      "doc_type": "SUITABILITY_POLICY",
+      "expected_document_id": "POL-SUIT-2026-V1",
+      "retrieved_chunk_count": 1,
+      "top_retrieved_source": "POL-SUIT-2026-V1#4__Concentration_and_Exposure_Caps",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_precision": 1.0,
+        "context_recall": 0.9286
+      },
+      "average_score": 0.9821,
+      "passed": true
+    },
+    {
+      "case_id": "rag-case-005-fixed-deposit-product-specs",
+      "query": "18-Month High-Yield Fixed Deposit prod-fd-18m specifications indicative return eligibility capital protection",
+      "doc_type": "PRODUCT_GUIDELINES",
+      "expected_document_id": "GDL-PROD-2026-V1",
+      "retrieved_chunk_count": 3,
+      "top_retrieved_source": "GDL-PROD-2026-V1#2_1_18-Month_High-Yield_Fixed_Deposit",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.8773,
+        "context_precision": 1.0,
+        "context_recall": 0.9839
+      },
+      "average_score": 0.9653,
+      "passed": true
+    },
+    {
+      "case_id": "rag-case-006-balanced-advantage-specs",
+      "query": "Specifications, indicative return, risk rating, and conservative prohibition for Dynamic Balanced Advantage Fund prod-balanced-adv",
+      "doc_type": "PRODUCT_GUIDELINES",
+      "expected_document_id": "GDL-PROD-2026-V1",
+      "retrieved_chunk_count": 3,
+      "top_retrieved_source": "GDL-PROD-2026-V1#2_3_Dynamic_Balanced_Advantage_Fund",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.8875,
+        "context_precision": 1.0,
+        "context_recall": 0.9355
+      },
+      "average_score": 0.9558,
+      "passed": true
+    },
+    {
+      "case_id": "rag-case-007-prohibited-promises-and-guarantees",
+      "query": "Strictly prohibited statements guaranteed returns zero risk promises statutory limits",
+      "doc_type": "CUSTOMER_COMMUNICATION_POLICY",
+      "expected_document_id": "POL-COMM-2026-V1",
+      "retrieved_chunk_count": 3,
+      "top_retrieved_source": "POL-COMM-2026-V1#2__Strictly_Prohibited_Statements___Language",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 0.955,
+        "context_precision": 1.0,
+        "context_recall": 0.9545
+      },
+      "average_score": 0.9774,
+      "passed": true
+    },
+    {
+      "case_id": "rag-case-008-prohibited-urgency-tactics",
+      "query": "Artificial Urgency Pressure Prohibited Act before 5 PM today or you will miss out limited spots remaining",
+      "doc_type": "CUSTOMER_COMMUNICATION_POLICY",
+      "expected_document_id": "POL-COMM-2026-V1",
+      "retrieved_chunk_count": 1,
+      "top_retrieved_source": "POL-COMM-2026-V1#2__Strictly_Prohibited_Statements___Language",
+      "scores": {
+        "faithfulness": 1.0,
+        "answer_relevance": 1.0,
+        "context_precision": 1.0,
+        "context_recall": 0.9074
+      },
+      "average_score": 0.9768,
+      "passed": true
+    }
+  ]
+}

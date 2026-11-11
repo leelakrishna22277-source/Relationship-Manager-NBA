@@ -1,0 +1,14 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/ai-service/.venv/Scripts/python.exe",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/ai-service",
+    "${workspaceFolder}/ai-service/app"
+  ],
+  "python.autoComplete.extraPaths": [
+    "${workspaceFolder}/ai-service",
+    "${workspaceFolder}/ai-service/app"
+  ],
+  "python.analysis.typeCheckingMode": "basic",
+  "typescript.tsdk": "frontend/node_modules/typescript/lib"
+}
+

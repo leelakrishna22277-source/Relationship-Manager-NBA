@@ -1,0 +1,16 @@
+{
+  "name": "bnk-10-capstone-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BNK-10 Relationship Manager Next-Best-Action Console Monorepo Workspace",
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:ai": "uvicorn app.main:app --app-dir ai-service --reload --port 8000",
+    "build:frontend": "npm --prefix frontend run build",
+    "test:backend": "npm --prefix backend run test",
+    "test:frontend": "npm --prefix frontend run test",
+    "test:ai": "python -m pytest ai-service/tests",
+    "test:all": "npm run test:backend && npm run test:frontend && npm run test:ai"
+  }
+}

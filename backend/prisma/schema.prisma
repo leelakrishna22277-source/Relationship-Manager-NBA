@@ -1,0 +1,255 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  RM
+  TEAM_LEAD
+}
+
+enum RiskProfile {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ProductRiskRating {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum NbaStatus {
+  PENDING
+  ACCEPTED
+  DISMISSED
+  COMPLETED
+}
+
+enum OutreachStatus {
+  DRAFT
+  UNDER_REVIEW
+  APPROVED
+}
+
+enum ContactMethod {
+  CALL
+  EMAIL
+}
+
+enum ContactStatus {
+  CONTACT_ATTEMPTED
+  CONTACTED
+  NO_RESPONSE
+  FOLLOW_UP_REQUIRED
+  COMPLETED
+}
+
+enum OutcomeType {
+  INTERESTED
+  NOT_INTERESTED
+  NO_RESPONSE
+  FOLLOW_UP_REQUIRED
+  CONVERTED
+}
+
+// 1. Teams
+model Team {
+  id         String   @id @default(uuid())
+  name       String
+  lead_rm_id String?
+  created_at DateTime @default(now())
+
+  rms        Rm[]
+
+  @@map("teams")
+}
+
+// 2. RMs (Stores both Relationship Managers and Team Leads)
+model Rm {
+  id            String   @id @default(uuid())
+  team_id       String?
+  name          String
+  email         String   @unique
+  password_hash String
+  role          Role     @default(RM)
+  created_at    DateTime @default(now())
+
+  team               Team?             @relation(fields: [team_id], references: [id], onDelete: SetNull)
+  clients            Client[]
+  outreaches         Outreach[]
+  contact_activities ContactActivity[]
+  nba_outcomes       NbaOutcome[]
+
+  @@map("rms")
+}
+
+// 3. Clients
+model Client {
+  id            String      @id @default(uuid())
+  rm_id         String?
+  full_name     String
+  segment       String      @default("PREMIER")
+  risk_profile  RiskProfile @default(MEDIUM)
+  client_since  DateTime?
+  kyc_status    String      @default("VERIFIED")
+  tax_residency String      @default("DOMESTIC")
+  email         String?
+  phone         String?
+  total_balance Decimal?    @db.Decimal(18, 2)
+  created_at    DateTime    @default(now())
+
+  rm       Rm?              @relation(fields: [rm_id], references: [id], onDelete: SetNull)
+  holdings Holding[]
+  signals  Signal[]
+  nbas     NextBestAction[]
+
+  @@map("clients")
+}
+
+// 4. Products
+model Product {
+  id                  String            @id @default(uuid())
+  name                String
+  category            String
+  risk_rating         ProductRiskRating @default(LOW)
+  min_investment      Decimal?          @db.Decimal(18, 2)
+  expected_return_bps Int?
+  tenure_months       Int?
+  tax_treatment       String?           @default("TAXABLE")
+  is_active           Boolean           @default(true)
+  created_at          DateTime          @default(now())
+
+  holdings Holding[]
+  nbas     NextBestAction[]
+
+  @@map("products")
+}
+
+// 5. Holdings
+model Holding {
+  id                String    @id @default(uuid())
+  client_id         String
+  product_id        String
+  account_number    String?
+  start_date        DateTime?
+  interest_rate_bps Int?
+  currency          String    @default("USD")
+  status            String    @default("ACTIVE")
+  balance           Decimal   @db.Decimal(18, 2)
+  maturity_date     DateTime?
+  created_at        DateTime  @default(now())
+
+  client  Client  @relation(fields: [client_id], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@map("holdings")
+}
+
+// 6. Signals
+model Signal {
+  id          String    @id @default(uuid())
+  client_id   String
+  type        String
+  data        Json
+  status      String    @default("ACTIVE")
+  detected_at DateTime
+  expires_at  DateTime?
+  created_at  DateTime  @default(now())
+
+  client Client @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  @@map("signals")
+}
+
+// 7. Next Best Actions (NBAs)
+model NextBestAction {
+  id                   String     @id @default(uuid())
+  client_id            String
+  action_type          String
+  title                String
+  reason               String?
+  evidence             Json
+  priority             Priority   @default(MEDIUM)
+  status               NbaStatus  @default(PENDING)
+  suggested_product_id String?
+  confidence           Float?
+  suitability          Json?
+  dismissal_rationale  String?
+  expires_at           DateTime?
+  generated_at         DateTime   @default(now())
+  created_at           DateTime   @default(now())
+
+  client            Client      @relation(fields: [client_id], references: [id], onDelete: Cascade)
+  suggested_product Product?    @relation(fields: [suggested_product_id], references: [id], onDelete: SetNull)
+  outreaches        Outreach[]
+  nba_outcomes      NbaOutcome[]
+
+  @@map("next_best_actions")
+}
+
+// 8. Outreaches
+model Outreach {
+  id                  String         @id @default(uuid())
+  nba_id              String
+  created_by_rm_id    String
+  draft_text          String
+  channel             String?        @default("EMAIL")
+  tone                String?        @default("ADVISORY")
+  subject             String?
+  grounding_citations Json?
+  disclaimer          String?
+  status              OutreachStatus @default(DRAFT)
+  created_at          DateTime       @default(now())
+
+  nba                NextBestAction    @relation(fields: [nba_id], references: [id], onDelete: Cascade)
+  created_by_rm      Rm                @relation(fields: [created_by_rm_id], references: [id], onDelete: Cascade)
+  contact_activities ContactActivity[]
+
+  @@map("outreaches")
+}
+
+// 9. Contact Activities
+model ContactActivity {
+  id             String        @id @default(uuid())
+  outreach_id    String
+  rm_id          String
+  contact_method ContactMethod @default(EMAIL)
+  contact_status ContactStatus @default(CONTACTED)
+  notes          String?
+  follow_up_date DateTime?
+  created_at     DateTime      @default(now())
+
+  outreach Outreach @relation(fields: [outreach_id], references: [id], onDelete: Cascade)
+  rm       Rm       @relation(fields: [rm_id], references: [id], onDelete: Cascade)
+
+  @@map("contact_activities")
+}
+
+// 10. NBA Outcomes
+model NbaOutcome {
+  id                String      @id @default(uuid())
+  nba_id            String
+  recorded_by_rm_id String
+  action_taken      Boolean     @default(true)
+  outcome           OutcomeType @default(INTERESTED)
+  notes             String?
+  follow_up_date    DateTime?
+  created_at        DateTime    @default(now())
+
+  nba            NextBestAction @relation(fields: [nba_id], references: [id], onDelete: Cascade)
+  recorded_by_rm Rm             @relation(fields: [recorded_by_rm_id], references: [id], onDelete: Cascade)
+
+  @@map("nba_outcomes")
+}
